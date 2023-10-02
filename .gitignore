@@ -1,0 +1,4 @@
+**/node_modules/
+TODO
+backend/config.json
+frontend/.gitignore
