@@ -1,24 +1,26 @@
 <template>
     <nav class="navbar navbar-expand-md fixed-top align-items-center" style="background-color: #212121;">
         <div class="container">
-            <div class="row align-items-center">
-                <span>
-                    <img src="../assets/logo.svg" width="50rem" alt="">
-                </span>
-                <span class="ml-4 my-auto text-white font-weight-bold" style="font-size: 25px;">Ratefy</span>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-            </div>
+            <router-link to="/" class="text-decoration-none">
+                <div class="row align-items-center">
+                    <img src="../assets/logo.svg" style="width: 5vh;" alt="">
+                    <span class="ml-3 my-auto menu-link text-white font-weight-bold" style="font-size: 25px;">Ratefy</span>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+            </router-link>
 
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav ml-auto row">
                     <div style="display: flex;" v-if="loggedIn">
                         <li class="nav-item">
-                            <a class="nav-link menu-link" id="btnParadas" href="charts.html">Paradas</a>
+                            <a class="nav-link menu-link" id="btnParadas">Paradas</a>
                         </li>
                         <li class="nav-item ml-3">
-                            <a class="nav-link menu-link" id="btnPerfil" href="profile.html">Perfil</a>
+                            <router-link to="/profile"  class="text-decoration-none">
+                                <a class="nav-link menu-link" id="btnPerfil">Perfil</a>
+                            </router-link>
                         </li>
                         <div class="vertical-divider ml-3"></div> <!-- Add the vertical divider here -->
                         <li class="nav-item">
@@ -58,6 +60,9 @@ export default {
             required: true
         }
     },
+    created() {
+        this.$root.verifyToken();
+    },
     methods: {
         loginWithSpotify() {
             window.location.href = 'http://localhost:3000/login';
@@ -76,10 +81,13 @@ export default {
 .menu-link {
     color: #999999;
 }
-
 .menu-link:hover {
     font-weight: bold;
     color: #999999;
+}
+
+.text-decoration-none {
+    text-decoration: none;
 }
 
 .profilePic {
@@ -88,7 +96,8 @@ export default {
     height: 40px;
     border: 3px solid #1db954;
 }
-.vertical-divider{
+
+.vertical-divider {
     border-left: 1px solid #999999;
     height: 40px;
     margin: 0 10px;
@@ -138,6 +147,10 @@ export default {
 
 .drop-menu-item a:hover {
     color: red;
+    cursor: pointer;
+}
+
+.pointer {
     cursor: pointer;
 }
 

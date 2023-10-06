@@ -5,7 +5,6 @@
     </header>
 
     <router-view>
-      <Home />
     </router-view>
     <Footer />
   </div>
@@ -21,10 +20,34 @@ export default {
   components: { Navbar, Home, Footer },
   data() {
     return {
-      showNav: false,
+      showNav: true,
+      loggedIn: false,
       username: '',
       userProfilePic: '',
     };
+  },
+  methods: {
+    verifyToken() {
+      const existingToken = sessionStorage.getItem('spotifyToken');
+      const urlToken = new URL(window.location.href).searchParams.get('access_token');
+
+      if (urlToken) {
+        sessionStorage.setItem('spotifyToken', urlToken);
+        window.location.href = 'http://localhost:5173/';
+      }
+      if (existingToken || urlToken) {
+        this.loggedIn = true
+        this.getUsernameAndPic();
+      }
+    },
+    async getUsernameAndPic() {
+      const config = {
+        headers: { Authorization: `Bearer ${sessionStorage.getItem('spotifyToken')}` },
+      };
+      const { data } = await this.$axios.get('http://localhost:3000/profile', config);
+      this.username = data.display_name;
+      this.userProfile = data.images[0].url;
+    },
   },
 };
 </script>

@@ -51,31 +51,13 @@ export default {
     checkSectionVisibility() {
       this.$root.showNav = this.$refs.scrollSection.getBoundingClientRect().top <= 0;
     },
-    verifyToken() {
-      const existingToken = sessionStorage.getItem('spotifyToken');
-      const urlToken = new URL(window.location.href).searchParams.get('access_token');
-
-      if (urlToken) {
-        sessionStorage.setItem('spotifyToken', urlToken);
-        window.location.href = 'http://localhost:5173/';
-      }
-      if (existingToken || urlToken) {
-        this.$root.loggedIn = true
-        this.getUsernameAndPic();
-      }
-    },
-    async getUsernameAndPic() {
-      const config = {
-        headers: { Authorization: `Bearer ${sessionStorage.getItem('spotifyToken')}` },
-      };
-      const { data } = await this.$axios.get('http://localhost:3000/profile', config);
-      this.$root.username = data.display_name;
-      this.$root.userProfile = data.images[0].url;
-    },
   },
   created() {
-    this.verifyToken();
+    this.$root.showNav = false;
+    this.$root.verifyToken();
+    console.log(this.$root.loggedIn)
     window.addEventListener('scroll', this.checkSectionVisibility);
+
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.checkSectionVisibility);
