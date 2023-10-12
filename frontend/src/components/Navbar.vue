@@ -18,22 +18,17 @@
                             <a class="nav-link menu-link" id="btnParadas">Paradas</a>
                         </li>
                         <li class="nav-item ml-3">
-                            <router-link to="/profile"  class="text-decoration-none">
+                            <router-link to="/profile" class="text-decoration-none">
                                 <a class="nav-link menu-link" id="btnPerfil">Perfil</a>
                             </router-link>
                         </li>
-                        <div class="vertical-divider ml-3"></div> <!-- Add the vertical divider here -->
+                        <div class="vertical-divider ml-3"></div>
                         <li class="nav-item">
                             <a class="nav-link menu-link">Bem-vindo, <span class="text-lime font-weight-bold">{{
                                 this.$root.username }}</span></a>
                         </li>
-                        <li class="nav-item menu-item">
-                            <img :src="this.$root.userProfile" class="profilePic" id="profilePic">
-                            <ul class="drop-menu">
-                                <li class="drop-menu-item">
-                                    <a @click="logout">Logout <i class="fas fa-sign-out-alt ml-3"></i></a>
-                                </li>
-                            </ul>
+                        <li class="nav-item menu-item growHover">
+                            <HoverAvatar :profileImage="this.$root.userProfile"   @logout="logout"/>
                         </li>
                     </div>
 
@@ -53,12 +48,17 @@
 
   
 <script>
+import HoverAvatar from '../components/HoverAvatar.vue';
+
 export default {
     props: {
         loggedIn: {
             type: Boolean,
             required: true
         }
+    },
+    components: {
+        'HoverAvatar': HoverAvatar
     },
     created() {
         this.$root.verifyToken();
@@ -81,20 +81,19 @@ export default {
 .menu-link {
     color: #999999;
 }
+
 .menu-link:hover {
     font-weight: bold;
     color: #999999;
 }
 
-.text-decoration-none {
-    text-decoration: none;
+.growHover:hover {
+    transform: scale(1.1);
+    transition: all .2s ease-in-out;
 }
 
-.profilePic {
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    border: 3px solid #1db954;
+.text-decoration-none {
+    text-decoration: none;
 }
 
 .vertical-divider {
@@ -130,8 +129,6 @@ export default {
     left: 60%;
     transform: translateX(-40%);
 }
-
-
 
 .drop-menu-item {
     width: 100%;
