@@ -1,6 +1,7 @@
 body {
   font-family: 'Montserrat';
-  background-color: #121212;
+  background: rgb(29, 185, 84);
+  background: radial-gradient(circle, rgba(29, 185, 84, 1) 22%, rgba(18, 18, 18, 1) 83%);
 }
 
 * {
@@ -11,6 +12,11 @@ body {
 
 ::-webkit-scrollbar {
   width: 12px;
+  background-color: #212121;
+}
+
+.bg-gray{
+  background-color: #212121;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -24,4 +30,14 @@ html {
 
 .text-lime {
   color: #1db954;
+}
+
+.glassmorphic-container {
+  background: rgba(29, 185, 84, 0.56);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(13.7px);
+  -webkit-backdrop-filter: blur(13.7px);
+  margin-top: 10vh;
+  margin-bottom: 4vh;
 }
