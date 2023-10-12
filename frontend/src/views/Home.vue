@@ -55,7 +55,6 @@ export default {
   created() {
     this.$root.showNav = false;
     this.$root.verifyToken();
-    console.log(this.$root.loggedIn)
     window.addEventListener('scroll', this.checkSectionVisibility);
 
   },
