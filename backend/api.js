@@ -17,6 +17,9 @@ const clientId = config.clientId;
 const clientSecret = config.clientSecret;
 const redirectUri = 'http://localhost:3000/callback';
 
+const brasilPlaylistURI = '37i9dQZEVXbMXbN3EUUhlg'
+const globalPlaylistURI = '37i9dQZEVXbMDoHDwVN2tF'
+
 app.use(cors());
 
 //#endregion
@@ -103,6 +106,47 @@ app.get('/playlists', async (req, res) => {
         return res.status(error.response.status).json({ message: 'Erro ao obter dados das playlists do Spotify.' });
     }
 });
+
+app.get('/charts', async (req, res) => {
+    const accessTokenHeader = req.headers['authorization'];
+
+    if (!accessTokenHeader || !accessTokenHeader.startsWith('Bearer ')) {
+        return res.status(401).json({ message: 'Token de acesso ausente ou inválido.' });
+    }
+
+    const accessToken = accessTokenHeader.split(' ')[1];
+
+    let charts = {};
+
+    try {
+        const response = await axios.get('https://api.spotify.com/v1/playlists/' + brasilPlaylistURI, {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
+
+        charts.brasil = response.data.tracks.items.slice(0, 10); // Obter os 10 primeiros itens.
+    } catch (error) {
+        console.error('Erro ao obter dados das paradas brasileiras Spotify:', error.response.data);
+        return res.status(error.response.status).json({ message: 'Erro ao obter dados das paradas brasileiras Spotify.' });
+    }
+
+    try {
+        const response = await axios.get('https://api.spotify.com/v1/playlists/' + globalPlaylistURI, {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
+
+        charts.global = response.data.tracks.items.slice(0, 10); // Obter os 10 primeiros itens.
+    } catch (error) {
+        console.error('Erro ao obter dados das paradas globais Spotify:', error.response.data);
+        return res.status(error.response.status).json({ message: 'Erro ao obter dados das paradas globais Spotify.' });
+    }
+
+    res.send(charts);
+});
+
 
 app.get('/ping', async (req, res) => {
     res.send('pong');
