@@ -3,11 +3,13 @@ import App from './App.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from './views/Home.vue';
 import Profile from './views/Profile.vue';
+import Charts from './views/Charts.vue';
 import axios from './plugins/axios';
 
 const routes = [
   { path: '/', component: Home },
   { path: '/profile', component: Profile },
+  { path: '/charts', component: Charts },
 ];
 
 const router = createRouter({

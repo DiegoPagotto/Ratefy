@@ -15,7 +15,9 @@
                 <ul class="navbar-nav ml-auto row">
                     <div style="display: flex;" v-if="loggedIn">
                         <li class="nav-item">
-                            <a class="nav-link menu-link" id="btnParadas">Paradas</a>
+                            <router-link to="/charts" class="text-decoration-none">
+                                <a class="nav-link menu-link" id="btnParadas">Paradas</a>
+                            </router-link>
                         </li>
                         <li class="nav-item ml-3">
                             <router-link to="/profile" class="text-decoration-none">
@@ -28,7 +30,7 @@
                                 this.$root.username }}</span></a>
                         </li>
                         <li class="nav-item menu-item growHover">
-                            <HoverAvatar :profileImage="this.$root.userProfile"   @logout="logout"/>
+                            <HoverAvatar :profileImage="this.$root.userProfile" @logout="logout" />
                         </li>
                     </div>
 
