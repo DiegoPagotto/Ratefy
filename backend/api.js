@@ -80,6 +80,30 @@ app.get('/profile', async (req, res) => {
     }
 });
 
+app.get('/playlists', async (req, res) => {
+    const accessTokenHeader = req.headers['authorization'];
+
+    if (!accessTokenHeader || !accessTokenHeader.startsWith('Bearer ')) {
+        return res.status(401).json({ message: 'Token de acesso ausente ou inválido.' });
+    }
+
+    const accessToken = accessTokenHeader.split(' ')[1];
+
+    try {
+        const response = await axios.get('https://api.spotify.com/v1/me/playlists?limit=30', {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
+
+        const userData = response.data;
+        return res.json(userData);
+    } catch (error) {
+        console.error('Erro ao obter dados das playlists Spotify:', error.response.data);
+        return res.status(error.response.status).json({ message: 'Erro ao obter dados das playlists do Spotify.' });
+    }
+});
+
 app.get('/ping', async (req, res) => {
     res.send('pong');
 });
