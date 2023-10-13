@@ -48,8 +48,6 @@ export default {
             };
             const { data } = await this.$axios.get('http://localhost:3000/charts', config);
             this.charts = data;
-            console.log(this.charts)
-            console.log(this.RegionSelector.selectedOption)
         },
         updateSelectedOption(option) {
             this.selectedOption = option;
