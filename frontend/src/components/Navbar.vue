@@ -20,8 +20,8 @@
                             </router-link>
                         </li>
                         <li class="nav-item ml-3">
-                            <router-link to="/profile" class="text-decoration-none">
-                                <a class="nav-link menu-link" id="btnPerfil">Perfil</a>
+                            <router-link to="/search" class="text-decoration-none">
+                                <a class="nav-link menu-link" id="btnSearch">Pesquisar</a>
                             </router-link>
                         </li>
                         <div class="vertical-divider ml-3"></div>
