@@ -21,8 +21,9 @@ O Ratefy está em constante desenvolvimento, e as próximas atualizações serã
 
 - [x] Consumo da API do Spotify
 - [x] Login e Logout
-- [ ] Perfil do usuário
-- [ ] Listagem de músicas populares
+- [x] Perfil do usuário
+- [x] Listagem de músicas populares
+- [x] Pesquisa de artistas
 - [ ] Avaliação e resenhas de músicas
 
 ## 📢 Contribuição
