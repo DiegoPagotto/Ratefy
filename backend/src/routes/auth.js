@@ -9,6 +9,28 @@ const clientSecret = config.clientSecret;
 const redirectUri = config.redirectUri;
 const frontEndUrl = config.frontEndUrl;
 
+const User = require('../models/User');
+
+async function createUserIfNotExists(token) {
+    try {
+        const response = await axios.get('https://api.spotify.com/v1/me', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        const userData = response.data;
+        let dbUser = await User.findOne({ where: { spotify_user_id: userData.id } });
+
+        if (!dbUser) {
+            dbUser = await User.create({ spotify_user_id: userData.id, display_name: userData.display_name, num_resenhas: 0, num_avaliacoes: 0 });
+        }
+
+    } catch (error) {
+        console.error('Erro ao obter dados do perfil do Spotify:', error);
+        return res.status(error.response.status).json({ message: 'Erro ao obter dados do perfil do Spotify.' });
+    }
+}
 
 router.get('/login', (req, res) => {
     const scope = 'user-read-private user-read-email';
@@ -41,6 +63,8 @@ router.get('/callback', async (req, res) => {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
         });
+
+        createUserIfNotExists(tokenResponse.data.access_token);
 
         res.redirect(`${frontEndUrl}/?access_token=${tokenResponse.data.access_token}`);
     } catch (error) {
