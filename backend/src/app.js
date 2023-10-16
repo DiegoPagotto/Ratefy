@@ -7,6 +7,11 @@ const playlistsRoute = require('./routes/playlists');
 const chartsRoute = require('./routes/charts');
 const searchRoute = require('./routes/search');
 
+const sequelize = require('./database');
+const User = require('./models/User');
+const Song = require('./models/Song');
+const Rate = require('./models/Rate');
+
 const app = express();
 const port = 3000;
 
@@ -21,6 +26,14 @@ app.use(profileRoute);
 app.use(playlistsRoute);
 app.use(chartsRoute);
 app.use(searchRoute);
+
+sequelize.sync()
+    .then(() => {
+        console.log('Tabelas foram sincronizadas.');
+    })
+    .catch((error) => {
+        console.error('Erro ao sincronizar tabelas: ', error);
+    });
 
 app.listen(port, () => {
     console.log(`Servidor em execução em http://localhost:${port}`);
