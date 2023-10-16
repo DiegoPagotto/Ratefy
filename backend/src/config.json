@@ -1,0 +1,9 @@
+{
+  "clientId": "your-client-id",
+  "clientSecret": "your-secret-key",
+  "frontEndUrl": "http://localhost:5173",
+  "backEndUrl": "http://localhost:3000",
+  "redirectUri": "http://localhost:3000/callback",
+  "brasilPlaylistURI": "37i9dQZEVXbMXbN3EUUhlg",
+  "globalPlaylistURI": "37i9dQZEVXbMDoHDwVN2tF"
+}

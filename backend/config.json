@@ -1,7 +1,0 @@
-{
-    "clientId": "your-client-id",
-    "clientSecret": "your-secret-key",
-    "frontEndUrl": "http://localhost:5173",
-    "backEndUrl": "http://localhost:3000"
-  }
-  
