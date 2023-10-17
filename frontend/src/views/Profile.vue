@@ -8,13 +8,13 @@
     </div>
     <div class="row justify-content-center text-center mx-5 mt-5">
       <div class="col-4 h4">
-        30 Resenhas
+        <span class="font-weight-bold">{{ userProfile.followers.total }}</span> seguidores <i class="fa fa-users" aria-hidden="true"></i>
       </div>
       <div class="col-4 h4">
-        30 Resenhas
+        <span class="font-weight-bold">{{ userProfile.totalRates }}</span> avaliações <i class="fa fa-star" aria-hidden="true"></i>
       </div>
       <div class="col-4 h4">
-        30 Resenhas
+        <span class="font-weight-bold">{{ userProfile.totalReviews }}</span> resenhas <i class="fa fa-comments" aria-hidden="true"></i>
       </div>
     </div>
     <div class="row justify-content-center mt-5">
