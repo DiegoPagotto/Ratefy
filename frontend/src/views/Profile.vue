@@ -76,6 +76,8 @@ export default {
   border-radius: 50%;
   margin-top: 50px;
   margin-bottom: 50px;
+  width: 50vh;
+  height: 50vh;
   border: 5px solid #1DB954;
   box-shadow: 0 0 0 5px #212121;
   background-color: #1DB954;

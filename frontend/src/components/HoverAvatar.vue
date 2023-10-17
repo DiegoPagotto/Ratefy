@@ -8,7 +8,7 @@ const hoverState = ref(false)
 <template>
     <HoverCardRoot v-model:open="hoverState">
         <HoverCardTrigger>
-            <img class="block profilePic" :src="profileImage" style="width: 5vh;">
+            <img class="block profilePic" :src="profileImage">
         </HoverCardTrigger>
         <HoverCardPortal>
             <HoverCardContent class="bg-gray rounded text-center mt-4">
