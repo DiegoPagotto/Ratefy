@@ -16,12 +16,12 @@
                     <div style="display: flex;" v-if="loggedIn">
                         <li class="nav-item">
                             <router-link to="/charts" class="text-decoration-none">
-                                <a class="nav-link menu-link" id="btnParadas">Paradas</a>
+                                <a class="nav-link menu-link" id="btnParadas">Paradas <i class="fa fa-chart-bar ml-2" aria-hidden="true"></i></a>
                             </router-link>
                         </li>
                         <li class="nav-item ml-3">
                             <router-link to="/search" class="text-decoration-none">
-                                <a class="nav-link menu-link" id="btnSearch">Pesquisar</a>
+                                <a class="nav-link menu-link" id="btnSearch">Pesquisar <i class="fa fa-search ml-2" aria-hidden="true"></i></a>
                             </router-link>
                         </li>
                         <div class="vertical-divider ml-3"></div>
