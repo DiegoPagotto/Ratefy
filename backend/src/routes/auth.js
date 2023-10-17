@@ -27,7 +27,7 @@ async function createRatefyPlaylistIfNotExists(token, spotify_user_id) {
     const playlists = await getUserPlaylists(token);
     const ratefyPlaylist = playlists.items.find((playlist) => playlist.name === 'MyRates');
     if (!ratefyPlaylist) {
-        createMyRatesPlaylist(token, spotify_user_id);
+        await createMyRatesPlaylist(token, spotify_user_id);
     }
 }
 
@@ -64,8 +64,8 @@ router.get('/callback', async (req, res) => {
             },
         });
         const userData = await getUserData(tokenResponse.data.access_token);
-        createUserIfNotExists(userData);
-        createRatefyPlaylistIfNotExists(tokenResponse.data.access_token, userData.id);
+        await createUserIfNotExists(userData);
+        await createRatefyPlaylistIfNotExists(tokenResponse.data.access_token, userData.id);
 
         res.redirect(`${frontEndUrl}/?access_token=${tokenResponse.data.access_token}`);
     } catch (error) {
