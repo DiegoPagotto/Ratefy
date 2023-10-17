@@ -2,15 +2,12 @@ const express = require('express');
 const cors = require('cors');
 const { checkAccessTokenMiddleware } = require('./middlewares/checkAccessToken');
 const authRoutes = require('./routes/auth');
-const profileRoute = require('./routes/profile');
-const playlistsRoute = require('./routes/playlists');
+const { profileRoute } = require('./routes/profile');
+const { playlistRoutes } = require('./routes/playlists');
 const chartsRoute = require('./routes/charts');
 const searchRoute = require('./routes/search');
 
 const sequelize = require('./database');
-const User = require('./models/User');
-const Song = require('./models/Song');
-const Rate = require('./models/Rate');
 
 const app = express();
 const port = 3000;
@@ -23,7 +20,7 @@ app.use(checkAccessTokenMiddleware);
 
 // Rotas
 app.use(profileRoute);
-app.use(playlistsRoute);
+app.use(playlistRoutes);
 app.use(chartsRoute);
 app.use(searchRoute);
 

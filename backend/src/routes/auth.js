@@ -9,31 +9,31 @@ const clientSecret = config.clientSecret;
 const redirectUri = config.redirectUri;
 const frontEndUrl = config.frontEndUrl;
 
+const { getUserData } = require('./profile');
+const { getUserPlaylists, createMyRatesPlaylist } = require('./playlists');
+
 const User = require('../models/User');
 
-async function createUserIfNotExists(token) {
-    try {
-        const response = await axios.get('https://api.spotify.com/v1/me', {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
+async function createUserIfNotExists(userData) {
+    let dbUser = await User.findOne({ where: { spotify_user_id: userData.id } });
 
-        const userData = response.data;
-        let dbUser = await User.findOne({ where: { spotify_user_id: userData.id } });
+    if (!dbUser) {
+        dbUser = await User.create({ spotify_user_id: userData.id, display_name: userData.display_name, num_resenhas: 0, num_avaliacoes: 0 });
+    }
 
-        if (!dbUser) {
-            dbUser = await User.create({ spotify_user_id: userData.id, display_name: userData.display_name, num_resenhas: 0, num_avaliacoes: 0 });
-        }
+}
 
-    } catch (error) {
-        console.error('Erro ao obter dados do perfil do Spotify:', error);
-        return res.status(error.response.status).json({ message: 'Erro ao obter dados do perfil do Spotify.' });
+async function createRatefyPlaylistIfNotExists(token, spotify_user_id) {
+    const playlists = await getUserPlaylists(token);
+    const ratefyPlaylist = playlists.items.find((playlist) => playlist.name === 'MyRates');
+    if (!ratefyPlaylist) {
+        createMyRatesPlaylist(token, spotify_user_id);
     }
 }
 
+
 router.get('/login', (req, res) => {
-    const scope = 'user-read-private user-read-email';
+    const scope = 'user-read-private user-read-email playlist-modify-public';
     const state = 'some-random-state';
 
     const authorizeUrl = `https://accounts.spotify.com/authorize?` +
@@ -63,8 +63,9 @@ router.get('/callback', async (req, res) => {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
         });
-
-        createUserIfNotExists(tokenResponse.data.access_token);
+        const userData = await getUserData(tokenResponse.data.access_token);
+        createUserIfNotExists(userData);
+        createRatefyPlaylistIfNotExists(tokenResponse.data.access_token, userData.id);
 
         res.redirect(`${frontEndUrl}/?access_token=${tokenResponse.data.access_token}`);
     } catch (error) {
