@@ -52,7 +52,7 @@ async function createMyRatesPlaylist(token, spotify_user_id) {
 playlistRoutes.get('/playlists', async (req, res) => {
     const accessToken = req.accessToken;
     try {
-        return res.json(getUserPlaylists(accessToken));
+        return res.json(await getUserPlaylists(accessToken));
     } catch (error) {
         console.error('Erro ao obter dados das playlists Spotify:', error.response.data);
         return res.status(error.response.status).json({ message: 'Erro ao obter dados das playlists do Spotify.' });
