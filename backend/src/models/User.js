@@ -9,6 +9,9 @@ const User = sequelize.define('User', {
     display_name: {
         type: Sequelize.STRING
     },
+    myrates_playlist_id: {
+        type: Sequelize.STRING
+    },
     num_resenhas: {
         type: Sequelize.INTEGER
     },
