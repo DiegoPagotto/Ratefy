@@ -1,41 +1,34 @@
 <template>
-    <nav class="navbar navbar-expand-md fixed-top align-items-center" style="background-color: #212121;">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #212121;">
         <div class="container">
-            <router-link to="/" class="text-decoration-none">
-                <div class="row align-items-center">
-                    <img src="../assets/logo.svg" style="width: 5vh;" alt="">
-                    <span class="ml-3 my-auto menu-link text-white font-weight-bold" style="font-size: 25px;">Ratefy</span>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                </div>
+            <router-link to="/" class="navbar-brand">
+                <img src="../assets/logo.svg" style="width: 5vh;" alt="">
+                <span class="ml-3 my-auto menu-link text-white font-weight-bold" style="font-size: 25px;">Ratefy</span>
             </router-link>
-
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav ml-auto row">
-                    <div style="display: flex;" v-if="loggedIn">
-                        <li class="nav-item">
-                            <router-link to="/charts" class="text-decoration-none">
-                                <a class="nav-link menu-link" id="btnParadas">Paradas <i class="fa fa-chart-bar ml-2" aria-hidden="true"></i></a>
-                            </router-link>
-                        </li>
-                        <li class="nav-item ml-3">
-                            <router-link to="/search" class="text-decoration-none">
-                                <a class="nav-link menu-link" id="btnSearch">Pesquisar <i class="fa fa-search ml-2" aria-hidden="true"></i></a>
-                            </router-link>
-                        </li>
-                        <div class="vertical-divider ml-3"></div>
-                        <li class="nav-item">
-                            <a class="nav-link menu-link">Bem-vindo, <span class="text-lime font-weight-bold">{{
-                                this.$root.username }}</span></a>
-                        </li>
-                        <li class="nav-item menu-item growHover">
-                            <HoverAvatar :profileImage="this.$root.userProfile" @logout="logout" />
-                        </li>
-                    </div>
-
-
-                    <li class="nav-item ml-4" id="btnLogin" v-if="!loggedIn">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar"
+                aria-controls="collapsibleNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                <ul class="navbar-nav ml-auto">
+                    <li v-if="loggedIn" class="nav-item">
+                        <router-link to="/charts" class="nav-link">
+                            Paradas <i class="fa fa-chart-bar ml-2" aria-hidden="true"></i>
+                        </router-link>
+                    </li>
+                    <li v-if="loggedIn" class="nav-item">
+                        <router-link to="/search" class="nav-link">
+                            Pesquisar <i class="fa fa-search ml-2" aria-hidden="true"></i>
+                        </router-link>
+                    </li>
+                    <li v-if="loggedIn" class="nav-item">
+                        <a class="nav-link">Bem-vindo, <span class="text-lime font-weight-bold">{{ this.$root.username
+                        }}</span></a>
+                    </li>
+                    <li v-if="loggedIn" class="nav-item menu-item growHover">
+                        <HoverAvatar :profileImage="this.$root.userProfile" @logout="logout" />
+                    </li>
+                    <li v-if="!loggedIn" class="nav-item" id="btnLogin">
                         <button @click="loginWithSpotify" class="btn btn-success d-flex text-dark pt-2 font-weight-bold"
                             style="border-radius: 50px;">
                             <span>Login com Spotify</span> <i class="fab fa-spotify fa-large ml-2"
@@ -48,7 +41,6 @@
     </nav>
 </template>
 
-  
 <script>
 import HoverAvatar from '../components/HoverAvatar.vue';
 
@@ -157,4 +149,3 @@ export default {
     display: block;
 }
 </style>
-  
