@@ -15,19 +15,19 @@ export default {
     props: {
         backgroundColor: {
             type: String,
-            default: "#1db954", // Cor de fundo padrão
+            default: "#1db954", 
         },
         title: {
             type: String,
-            default: "Ratefy", // Título padrão
+            default: "Ratefy", 
         },
         description: {
             type: String,
-            default: "Desenvolvido por Diego Pagotto na disciplina de Projeto de Sistemas - 6º Semestre - ADS - IFSP São Carlos", // Descrição padrão
+            default: "Desenvolvido por Diego Pagotto na disciplina de Projeto de Sistemas - 6º Semestre - ADS - IFSP São Carlos", 
         },
         poweredBy: {
             type: String,
-            default: "Powered by Spotify Web API ", // Texto padrão
+            default: "Powered by Spotify Web API ",
         },
     },
 };

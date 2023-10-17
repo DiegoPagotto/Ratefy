@@ -45,9 +45,9 @@ export default {
       const config = {
         headers: { Authorization: `Bearer ${token}` },
       };
-      const { data } = await this.$axios.get('http://localhost:3000/profile', config);
+      const { data } = await this.$axios.get(`${this.$config.backEndURL}/profile`, config);
       this.userProfile = data;
-      const { data: playlists } = await this.$axios.get('http://localhost:3000/playlists', config);
+      const { data: playlists } = await this.$axios.get(`${this.$config.backEndURL}/playlists`, config);
       this.userProfile.playlists = this.getRandomPlaylists(playlists.items);
     },
     getRandomPlaylists(playlistsArray) {

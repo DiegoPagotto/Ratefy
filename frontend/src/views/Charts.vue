@@ -46,7 +46,7 @@ export default {
             const config = {
                 headers: { Authorization: `Bearer ${token}` },
             };
-            const { data } = await this.$axios.get('http://localhost:3000/charts', config);
+            const { data } = await this.$axios.get(`${this.$config.backEndURL}/charts`, config);
             this.charts = data;
         },
         updateSelectedOption(option) {

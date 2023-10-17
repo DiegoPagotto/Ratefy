@@ -67,7 +67,7 @@ export default {
     },
     methods: {
         loginWithSpotify() {
-            window.location.href = 'http://localhost:3000/login';
+            window.location.href = `${this.$config.backEndURL}/login`;
         },
         logout() {
             sessionStorage.removeItem('spotifyToken');

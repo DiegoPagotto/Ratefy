@@ -33,7 +33,7 @@ export default {
 
       if (urlToken) {
         sessionStorage.setItem('spotifyToken', urlToken);
-        window.location.href = 'http://localhost:5173/';
+        window.location.href = `${this.$config.frontEndURL}`;
       }
       if (existingToken || urlToken) {
         this.loggedIn = true
@@ -44,7 +44,7 @@ export default {
       const config = {
         headers: { Authorization: `Bearer ${sessionStorage.getItem('spotifyToken')}` },
       };
-      const { data } = await this.$axios.get('http://localhost:3000/profile', config);
+      const { data } = await this.$axios.get(`${this.$config.backEndURL}/profile`, config);
       this.username = data.display_name;
       this.userProfile = data.images[0].url;
     },

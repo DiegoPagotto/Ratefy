@@ -67,7 +67,7 @@ export default {
             const config = {
                 headers: { Authorization: `Bearer ${token}` },
             };
-            const { data } = await this.$axios.get(`http://localhost:3000/search?query=${this.query}`, config); // Use this.query para construir a URL
+            const { data } = await this.$axios.get(`${this.$config.backEndURL}/search?query=${this.query}`, config);
             this.artistData = data;
         },
         capitalize(value) {
