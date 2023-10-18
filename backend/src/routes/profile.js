@@ -33,13 +33,10 @@ async function getDatabaseData(userData) {
             attributes: ['num_resenhas', 'num_avaliacoes']
         });
 
-        if (!user) {
-            throw new Error('Usuário não encontrado no banco de dados.');
+        if (user) {
+            userData.totalReviews = user.num_resenhas;
+            userData.totalRates = user.num_avaliacoes;
         }
-
-        userData.totalReviews = user.num_resenhas;
-        userData.totalRates = user.num_avaliacoes;
-
         return userData
 
     } catch (error) {
