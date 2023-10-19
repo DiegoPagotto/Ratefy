@@ -17,7 +17,9 @@
                         <th scope="row">{{ index + 1 }}</th>
                         <SongIFrame :songURI="track.track.uri" />
                         <td>
-                            <button>Ver</button>
+                            <router-link :to="{ name: 'Song', params: { trackId: track.track.id } }"><i
+                                    class="fa fa-eye fa-3x text-lime" />
+                            </router-link>
                         </td>
                     </tr>
                 </tbody>
@@ -77,6 +79,10 @@ tbody>tr {
 tr>td,
 th {
     vertical-align: middle;
+}
+
+i:hover {
+    color: #128339;
 }
 </style>
   

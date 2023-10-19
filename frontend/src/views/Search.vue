@@ -43,7 +43,9 @@
                             <SongIFrame :songURI="track.uri" />
                         </td>
                         <td>
-                            <button>Ver</button>
+                            <router-link :to="{ name: 'Song', params: { trackId: track.id } }"><i
+                                    class="fa fa-eye fa-3x text-lime" />
+                            </router-link>
                         </td>
                     </tr>
                 </tbody>
@@ -102,6 +104,10 @@ tbody>tr {
 tr>td,
 th {
     vertical-align: middle;
+}
+
+i:hover {
+    color: #128339;
 }
 </style>
   
