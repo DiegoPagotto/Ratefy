@@ -15,7 +15,7 @@ const routes = [
   { path: '/profile', component: Profile },
   { path: '/charts', component: Charts },
   { path: '/search', component: Search },
-  { path: '/song', component: Song },
+  { path: '/song', name:"Song", component: Song, props: true },
 ];
 
 const router = createRouter({
