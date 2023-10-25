@@ -1,6 +1,6 @@
 const express = require('express');
 const axios = require('axios');
-const router = express.Router();
+const songRoutes = express.Router();
 
 const Rate = require('../models/Rate');
 const { getUserData } = require('./profile');
@@ -22,13 +22,13 @@ async function getUserActions(songId, token) {
         });
 
         if (!existingRate) {
-            return { canReview: true, canRate: true };
+            return { hasReviewed: false, hasRated: false };
         }
 
-        const canRate = !existingRate.nota;
-        const canReview = !existingRate.texto;
+        const hasRated = existingRate.nota;
+        const hasReviewed = existingRate.texto;
 
-        return { canReview, canRate };
+        return { hasReviewed, hasRated };
 
     } catch (error) {
         console.error('Erro ao obter dados do perfil do banco de dados:', error);
@@ -36,7 +36,7 @@ async function getUserActions(songId, token) {
     }
 }
 
-router.get('/song', async (req, res) => {
+songRoutes.get('/song', async (req, res) => {
     const accessToken = req.accessToken;
     const song = {};
     try {
@@ -59,4 +59,4 @@ router.get('/song', async (req, res) => {
     }
 });
 
-module.exports = router;
+module.exports = { songRoutes, getSongID, getUserActions };

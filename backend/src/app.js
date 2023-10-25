@@ -1,12 +1,15 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const cors = require('cors');
+
 const { checkAccessTokenMiddleware } = require('./middlewares/checkAccessToken');
+
 const authRoutes = require('./routes/auth');
 const { profileRoute } = require('./routes/profile');
 const { playlistRoutes } = require('./routes/playlists');
 const chartsRoute = require('./routes/charts');
 const searchRoute = require('./routes/search');
-const songRoute = require('./routes/song');
+const { songRoutes } = require('./routes/song');
 
 const sequelize = require('./database');
 const User = require('./models/User');
@@ -18,6 +21,7 @@ const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(authRoutes);
+app.use(bodyParser.json());
 
 // Middlewares
 app.use(checkAccessTokenMiddleware);
@@ -27,7 +31,7 @@ app.use(profileRoute);
 app.use(playlistRoutes);
 app.use(chartsRoute);
 app.use(searchRoute);
-app.use(songRoute);
+app.use(songRoutes);
 
 sequelize.sync()
     .then(() => {
