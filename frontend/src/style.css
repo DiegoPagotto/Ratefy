@@ -41,3 +41,11 @@ html {
   margin-top: 10vh;
   margin-bottom: 4vh;
 }
+
+.fa-star{
+  color: #212121;
+}
+
+.selected {
+  color: #1db954;
+}
