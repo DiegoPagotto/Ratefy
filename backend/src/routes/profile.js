@@ -30,12 +30,12 @@ async function getDatabaseData(userData) {
             where: {
                 spotify_user_id: userData.id
             },
-            attributes: ['num_resenhas', 'num_avaliacoes']
+            attributes: ['rates', 'reviews']
         });
 
         if (user) {
-            userData.totalReviews = user.num_resenhas;
-            userData.totalRates = user.num_avaliacoes;
+            userData.totalReviews = user.reviews;
+            userData.totalRates = user.rates;
         }
         return userData
 

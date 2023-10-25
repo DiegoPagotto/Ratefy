@@ -12,11 +12,13 @@ const User = sequelize.define('User', {
     myrates_playlist_id: {
         type: Sequelize.STRING
     },
-    num_resenhas: {
-        type: Sequelize.INTEGER
+    rates: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0
     },
-    num_avaliacoes: {
-        type: Sequelize.INTEGER
+    reviews: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0
     }
 });
 
