@@ -10,7 +10,7 @@ const { playlistRoutes } = require('./routes/playlists');
 const chartsRoute = require('./routes/charts');
 const searchRoute = require('./routes/search');
 const { songRoutes } = require('./routes/song');
-const rateRoute = require('./routes/rate');
+const { rateRoute } = require('./routes/rate');
 
 const sequelize = require('./database');
 const User = require('./models/User');

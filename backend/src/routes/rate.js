@@ -1,6 +1,6 @@
 const express = require('express');
 const axios = require('axios');
-const router = express.Router();
+const rateRoute = express.Router();
 const { getUserData } = require('./profile');
 const { getUserActions, getSongID } = require('./song');
 const User = require('../models/User');
@@ -31,7 +31,7 @@ async function increaseUserRateCount(userId) {
     await User.increment('rates', { where: { spotify_user_id: userId } });
 }
 
-router.post('/rate', async (req, res) => {
+rateRoute.post('/rate', async (req, res) => {
     const accessToken = req.accessToken;
     const songId = getSongID(req.body.songId);
     const user = await getUserData(accessToken);
@@ -40,7 +40,7 @@ router.post('/rate', async (req, res) => {
         if (userActions.hasRated) {
             await Rate.update({ rate: req.body.rate }, { where: { spotify_user_id: user.id, spotify_song_id: songId } });
         } else {
-            if(!await songExists(songId)){
+            if (!await songExists(songId)) {
                 await createSong(songId, accessToken)
             }
             await Rate.create({
@@ -58,4 +58,4 @@ router.post('/rate', async (req, res) => {
     }
 });
 
-module.exports = router;
+module.exports = { rateRoute, addSongToMyRates, songExists, createSong };
