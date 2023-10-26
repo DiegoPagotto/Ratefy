@@ -1,8 +1,8 @@
 const express = require('express');
 const axios = require('axios');
 const rateRoute = express.Router();
-const { getUserData } = require('./profile');
-const { getUserActions, getSongID } = require('./song');
+const { getUserData, updateUserRatesAndReviews } = require('./profile');
+const { getExistingRate, getSongID } = require('./song');
 const User = require('../models/User');
 const Rate = require('../models/Rate');
 const Song = require('../models/Song');
@@ -27,17 +27,13 @@ async function createSong(songId, token) {
     });
 }
 
-async function increaseUserRateCount(userId) {
-    await User.increment('rates', { where: { spotify_user_id: userId } });
-}
-
 rateRoute.post('/rate', async (req, res) => {
     const accessToken = req.accessToken;
     const songId = getSongID(req.body.songId);
     const user = await getUserData(accessToken);
-    const userActions = await getUserActions(songId, accessToken);
+    const existingRate = await getExistingRate(songId, accessToken);
     try {
-        if (userActions.hasRated) {
+        if (existingRate) {
             await Rate.update({ rate: req.body.rate }, { where: { spotify_user_id: user.id, spotify_song_id: songId } });
         } else {
             if (!await songExists(songId)) {
@@ -49,8 +45,8 @@ rateRoute.post('/rate', async (req, res) => {
                 spotify_song_id: songId
             });
             await addSongToMyRates(user.id, songId, accessToken);
-            await increaseUserRateCount(user.id);
         }
+        await updateUserRatesAndReviews(user.id);
         res.send("Avaliação salva com sucesso.")
     } catch (error) {
         console.error('Erro ao obter dados do Spotify:', error);

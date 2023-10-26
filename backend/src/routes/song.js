@@ -10,26 +10,16 @@ function getSongID(uri) {
     return parts[parts.length - 1];
 }
 
-async function getUserActions(songId, token) {
+async function getExistingRate(songId, token) {
     try {
         const userId = await getUserData(token);
 
-        const existingRate = await Rate.findOne({
+        return await Rate.findOne({
             where: {
                 spotify_user_id: userId.id,
                 spotify_song_id: songId,
             },
         });
-
-        if (!existingRate) {
-            return { hasReviewed: false, hasRated: false };
-        }
-
-        const hasRated = existingRate.rate;
-        const hasReviewed = existingRate.review;
-
-        return { hasReviewed, hasRated };
-
     } catch (error) {
         console.error('Erro ao obter dados do perfil do banco de dados:', error);
         throw error;
@@ -51,7 +41,7 @@ songRoutes.get('/song', async (req, res) => {
         else
             res.status(404).json({ message: 'Música não encontrada.' });
 
-        song.userActions = await getUserActions(song.spotifyData.id, accessToken);
+        song.userActions = await getExistingRate(song.spotifyData.id, accessToken);
         res.send(song);
     } catch (error) {
         console.error('Erro ao obter dados do Spotify:', error);
@@ -59,4 +49,4 @@ songRoutes.get('/song', async (req, res) => {
     }
 });
 
-module.exports = { songRoutes, getSongID, getUserActions };
+module.exports = { songRoutes, getSongID, getExistingRate };
