@@ -4,14 +4,14 @@ const User = require('./User');
 const Song = require('./Song');
 
 const Rate = sequelize.define('Rate', {
-    nota: {
+    rate: {
         type: Sequelize.INTEGER,
         validate: {
             min: 1,
             max: 5
         }
     },
-    texto: {
+    review: {
         type: Sequelize.STRING
     }
 });

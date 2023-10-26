@@ -38,13 +38,13 @@ router.post('/rate', async (req, res) => {
     const userActions = await getUserActions(songId, accessToken);
     try {
         if (userActions.hasRated) {
-            await Rate.update({ nota: req.body.rate }, { where: { spotify_user_id: user.id, spotify_song_id: songId } });
+            await Rate.update({ rate: req.body.rate }, { where: { spotify_user_id: user.id, spotify_song_id: songId } });
         } else {
             if(!await songExists(songId)){
                 await createSong(songId, accessToken)
             }
             await Rate.create({
-                nota: req.body.rate,
+                rate: req.body.rate,
                 spotify_user_id: user.id,
                 spotify_song_id: songId
             });

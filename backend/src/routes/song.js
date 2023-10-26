@@ -25,8 +25,8 @@ async function getUserActions(songId, token) {
             return { hasReviewed: false, hasRated: false };
         }
 
-        const hasRated = existingRate.nota;
-        const hasReviewed = existingRate.texto;
+        const hasRated = existingRate.rate;
+        const hasReviewed = existingRate.review;
 
         return { hasReviewed, hasRated };
 
