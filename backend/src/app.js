@@ -11,6 +11,7 @@ const chartsRoute = require('./routes/charts');
 const searchRoute = require('./routes/search');
 const { songRoutes } = require('./routes/song');
 const { rateRoute } = require('./routes/rate');
+const { reviewRoute } = require('./routes/review');
 
 const sequelize = require('./database');
 const User = require('./models/User');
@@ -34,6 +35,7 @@ app.use(chartsRoute);
 app.use(searchRoute);
 app.use(songRoutes);
 app.use(rateRoute);
+app.use(reviewRoute);
 
 sequelize.sync()
     .then(() => {
