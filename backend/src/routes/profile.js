@@ -3,6 +3,9 @@ const axios = require('axios');
 const profileRoute = express.Router();
 
 const User = require('../models/User');
+const Rate = require('../models/Rate');
+
+const { Op } = require('sequelize');
 
 async function getUserData(accessToken) {
     let userData = await getSpotifyData(accessToken);
@@ -45,6 +48,34 @@ async function getDatabaseData(userData) {
     }
 }
 
+async function updateUserRatesAndReviews(spotifyUserId) {
+    try {
+        const rates = await Rate.count({
+            where: {
+                spotify_user_id: spotifyUserId,
+                rate: { [Op.ne]: null }
+            }
+        });
+
+        const reviews = await Rate.count({
+            where: {
+                spotify_user_id: spotifyUserId,
+                review: { [Op.ne]: null }
+            }
+        });
+
+        await User.update(
+            { rates: rates, reviews: reviews },
+            { where: { spotify_user_id: spotifyUserId } }
+        );
+
+        console.log('Dados do usuário atualizados com sucesso.');
+    } catch (error) {
+        console.error('Erro ao atualizar reviews e rates do perfil do banco de dados:', error);
+        throw error;
+    }
+}
+
 profileRoute.get('/profile', async (req, res) => {
     const accessToken = req.accessToken;
     try {
@@ -56,4 +87,4 @@ profileRoute.get('/profile', async (req, res) => {
     }
 });
 
-module.exports = { profileRoute, getUserData };
+module.exports = { profileRoute, getUserData, updateUserRatesAndReviews };
