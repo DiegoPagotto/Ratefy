@@ -29,7 +29,7 @@
                     </div>
                     <div class="col">
                         <button class='btn btn-outline-success actionButton' style='border:none;' data-toggle='modal'
-                            data-target='#modalReview' title='Escrever resenha'>
+                            @click="showReviewModal">
                             <i class='fas fa-4x fa-edit'></i>
                         </button>
                     </div>
@@ -139,7 +139,48 @@ export default {
                 }
 
             });
-        }
+        },
+        showReviewModal() {
+            Swal.fire({
+                title: '<h1 class="text-lime">Resenha</h1>',
+                html: `<textarea class="form-control mx-3 btn-success" id="reviewInputValue" rows="5" style="background-color: #131414; border-color: black; color: #1db954; width:30vw" maxlength="355"></textarea>`,
+                showCancelButton: true,
+                cancelButtonText: 'Cancelar',
+                confirmButtonText: 'Resenhar',
+                confirmButtonColor: '#1db954',
+                width: '40vw',
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    const review = document.getElementById('reviewInputValue').value;
+                    const token = sessionStorage.getItem('spotifyToken');
+                    const songId = this.songData.spotifyData.id;
+                    const data = {
+                        songId: songId,
+                        review: review
+                    };
+
+                    this.$axios.post('http://localhost:3000/review', data, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        }
+                    })
+                        .then(response => {
+                            console.log(response.data);
+                            Swal.fire({
+                                title: 'Resenha enviada!',
+                                icon: 'success',
+                                confirmButtonText: 'Ok',
+                                confirmButtonColor: '#1db954',
+                            });
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                }
+
+            });
+        },
     },
     created() {
         this.fetchSong();
