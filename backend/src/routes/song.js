@@ -2,6 +2,8 @@ const express = require('express');
 const axios = require('axios');
 const songRoutes = express.Router();
 
+const { Sequelize } = require('sequelize');
+
 const Rate = require('../models/Rate');
 const { getUserData } = require('./profile');
 
@@ -26,6 +28,38 @@ async function getExistingRate(songId, token) {
     }
 }
 
+async function getRatesAndReviews(songId) {
+    try {
+        const rates = await Rate.findAll({
+            attributes: ['rate', [Sequelize.fn('COUNT', 'rate'), 'count']],
+            where: { spotify_song_id: songId },
+            group: ['rate'],
+        });
+
+        const countMap = {
+            1: 0,
+            2: 0,
+            3: 0,
+            4: 0,
+            5: 0,
+        };
+
+        rates.forEach(rate => {
+            countMap[rate.rate] = rate.dataValues.count;
+        });
+
+        const output = {
+            rateCounts: countMap,
+            reviews: (await Rate.findAll({ where: { spotify_song_id: songId, review: { [Sequelize.Op.not]: null } } })),
+        };
+
+        return output;
+    } catch (error) {
+        console.error('Erro ao obter dados de rates e reviews do banco de dados:', error);
+        throw error;
+    }
+}
+
 songRoutes.get('/song', async (req, res) => {
     const accessToken = req.accessToken;
     const song = {};
@@ -42,6 +76,7 @@ songRoutes.get('/song', async (req, res) => {
             res.status(404).json({ message: 'Música não encontrada.' });
 
         song.userActions = await getExistingRate(song.spotifyData.id, accessToken);
+        song.ratefyData = await getRatesAndReviews(song.spotifyData.id);
         res.send(song);
     } catch (error) {
         console.error('Erro ao obter dados do Spotify:', error);
