@@ -13,12 +13,12 @@
                 <ul class="navbar-nav ml-auto">
                     <li v-if="loggedIn" class="nav-item">
                         <router-link to="/charts" class="nav-link">
-                            Paradas <i class="fa fa-chart-bar ml-2" aria-hidden="true"></i>
+                            Paradas <i class="fa fa-chart-bar ml-2 text-lime" aria-hidden="true"></i>
                         </router-link>
                     </li>
                     <li v-if="loggedIn" class="nav-item mr-5">
                         <router-link to="/search" class="nav-link">
-                            Pesquisar <i class="fa fa-search ml-2" aria-hidden="true"></i>
+                            Pesquisar <i class="fa fa-search ml-2 text-lime" aria-hidden="true"></i>
                         </router-link>
                     </li>
                     <li v-if="loggedIn" class="nav-item">
