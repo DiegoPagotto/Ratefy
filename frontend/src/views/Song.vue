@@ -39,6 +39,26 @@
                 <canvas id="ratesChart"></canvas>
             </div>
         </div>
+        <div class="row mx-5">
+            <div v-for="(review, index) in songData.ratefyData.reviews" :key="index" class="col-md-6 mt-4 mb-4">
+                <div class="card bg-gray text-lime">
+                    <div class="card-body">
+                        <div class="d-flex pb-3" style="border-bottom: 1px solid #1db954;">
+                            <div class="mr-3">
+                                <img :src="review.reviewer.images[0].url" class="profilePic"
+                                    :alt="review.reviewer.display_name" style="width: 50px; height: 50px; margin: 0;">
+                            </div>
+                            <div class="d-flex flex-column justify-content-center">
+                                <h5 class="card-title mb-0">{{ review.reviewer.display_name }}</h5>
+                            </div>
+                        </div>
+                        <p class="card-text mt-3">{{ review.review }}</p>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
     </div>
 </template>
   
@@ -65,6 +85,7 @@ export default {
                 config
             );
             this.songData = data;
+            console.log(data)
             this.renderDoughnutChart();
         },
         convertToMinutes(miliseconds) {
@@ -177,6 +198,7 @@ export default {
                                 confirmButtonText: 'Ok',
                                 confirmButtonColor: '#1db954',
                             });
+                            this.fetchSong();
                         })
                         .catch(error => {
                             console.error('Error:', error);
@@ -210,11 +232,11 @@ export default {
                     var width = this.chart.width,
                         height = this.chart.height;
 
-                    var fontSize = (height / 114).toFixed(2);
+                    var fontSize = average > 0 ? (height / 114).toFixed(2) : 1.5;
                     this.chart.ctx.font = fontSize + "em Verdana";
                     this.chart.ctx.textBaseline = "middle";
 
-                    var text = average,
+                    var text = average > 0 ? average.toFixed(2) : 'Nenhuma avaliação para essa música.',
                         textX = Math.round((width - this.chart.ctx.measureText(text).width) / 2),
                         textY = height / 2;
 
