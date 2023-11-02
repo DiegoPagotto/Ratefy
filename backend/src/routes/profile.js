@@ -27,6 +27,21 @@ async function getSpotifyData(accessToken) {
     }
 }
 
+async function getReviewerData(spotifyUserId, accessToken) {
+    try {
+        const response = await axios.get('https://api.spotify.com/v1/users/'+ spotifyUserId, {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
+        return (({ id, display_name, images }) => ({ id, display_name, images }))(response.data);
+    } catch (error) {
+        console.error('Erro ao obter dados de quem escreveu a resenha no Spotify:', error);
+        throw error;
+    }
+}
+
+
 async function getDatabaseData(userData) {
     try {
         const user = await User.findOne({
@@ -87,4 +102,4 @@ profileRoute.get('/profile', async (req, res) => {
     }
 });
 
-module.exports = { profileRoute, getUserData, updateUserRatesAndReviews };
+module.exports = { profileRoute, getUserData, updateUserRatesAndReviews, getReviewerData };
