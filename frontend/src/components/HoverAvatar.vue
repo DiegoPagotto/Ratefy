@@ -8,7 +8,7 @@ const hoverState = ref(false)
 <template>
     <HoverCardRoot v-model:open="hoverState">
         <HoverCardTrigger>
-            <img class="block profilePic" :src="profileImage">
+            <img class="block profilePic" style="width: 40px;height: 40px; margin: 0;" :src="profileImage">
         </HoverCardTrigger>
         <HoverCardPortal>
             <HoverCardContent class="bg-gray rounded text-center mt-4">
@@ -39,13 +39,6 @@ export default {
 </script>
 
 <style scoped>
-.profilePic {
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    border: 3px solid #1db954;
-}
-
 .dropdown-item {
     color: #1db954;
 }
