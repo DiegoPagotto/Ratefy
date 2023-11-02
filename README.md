@@ -24,7 +24,7 @@ O Ratefy está em constante desenvolvimento, e as próximas atualizações serã
 - [x] Perfil do usuário
 - [x] Listagem de músicas populares
 - [x] Pesquisa de artistas
-- [ ] Avaliação e resenhas de músicas
+- [x] Avaliação e resenhas de músicas
 
 ## 📢 Contribuição
 
