@@ -35,7 +35,9 @@
                     </div>
                 </div>
             </div>
-            <div class="col"></div>
+            <div class="col">
+                <canvas id="ratesChart"></canvas>
+            </div>
         </div>
     </div>
 </template>
@@ -49,6 +51,9 @@ export default {
             songData: null,
         };
     },
+    mounted() {
+        this.renderDoughnutChart();
+    },
     methods: {
         async fetchSong() {
             const token = sessionStorage.getItem('spotifyToken');
@@ -60,7 +65,7 @@ export default {
                 config
             );
             this.songData = data;
-            console.log(this.songData);
+            this.renderDoughnutChart();
         },
         convertToMinutes(miliseconds) {
             let minutes = Math.floor(miliseconds / 60000);
@@ -112,7 +117,6 @@ export default {
                     const token = sessionStorage.getItem('spotifyToken');
                     const songId = this.songData.spotifyData.id;
                     const rate = rateInputValue;
-                    console.log(rateInputValue)
                     const data = {
                         songId: songId,
                         rate: rate
@@ -125,13 +129,13 @@ export default {
                         }
                     })
                         .then(response => {
-                            console.log(response.data);
                             Swal.fire({
                                 title: 'Avaliação enviada!',
                                 icon: 'success',
                                 confirmButtonText: 'Ok',
                                 confirmButtonColor: '#1db954',
                             });
+                            this.fetchSong();
                         })
                         .catch(error => {
                             console.error('Error:', error);
@@ -181,6 +185,69 @@ export default {
 
             });
         },
+        renderDoughnutChart() {
+            const rateCounts = this.songData.ratefyData.rateCounts;
+            let sum = 0;
+            let total = 0;
+
+            for (const [key, value] of Object.entries(rateCounts)) {
+                sum += key * value;
+                total += value;
+            }
+
+            const average = total === 0 ? 0 : sum / total;
+
+            Chart.types.Doughnut.extend({
+                name: "DoughnutTextInside",
+                showTooltip: function () {
+                    this.chart.ctx.save();
+                    Chart.types.Doughnut.prototype.showTooltip.apply(this, arguments);
+                    this.chart.ctx.restore();
+                },
+                draw: function () {
+                    Chart.types.Doughnut.prototype.draw.apply(this, arguments);
+
+                    var width = this.chart.width,
+                        height = this.chart.height;
+
+                    var fontSize = (height / 114).toFixed(2);
+                    this.chart.ctx.font = fontSize + "em Verdana";
+                    this.chart.ctx.textBaseline = "middle";
+
+                    var text = average,
+                        textX = Math.round((width - this.chart.ctx.measureText(text).width) / 2),
+                        textY = height / 2;
+
+                    this.chart.ctx.fillText(text, textX, textY);
+                }
+            });
+            var data = [{
+                value: rateCounts["1"],
+                color: "#1db954",
+                label: "🌟"
+            }, {
+                value: rateCounts["2"],
+                color: "#1aa84b",
+                label: "🌟🌟"
+            }, {
+                value: rateCounts["3"],
+                color: "#179d41",
+                label: "🌟🌟🌟"
+            }, {
+                value: rateCounts["4"],
+                color: "#148237",
+                label: "🌟🌟🌟🌟"
+            }, {
+                value: rateCounts["5"],
+                color: "#11672c",
+                label: "🌟🌟🌟🌟🌟"
+            }];
+
+            new Chart($('#ratesChart')[0].getContext('2d')).DoughnutTextInside(data, {
+                responsive: true,
+                segmentStrokeColor: "#000000"
+            });
+        },
     },
     created() {
         this.fetchSong();
@@ -219,6 +286,11 @@ export default {
 
 .star-rating span {
     color: #c3c3c3;
+}
+
+#ratesChart {
+    width: 30vw !important;
+    height: 30vw !important;
 }
 </style>
   
