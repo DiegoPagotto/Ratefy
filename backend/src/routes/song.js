@@ -5,7 +5,7 @@ const songRoutes = express.Router();
 const { Sequelize } = require('sequelize');
 
 const Rate = require('../models/Rate');
-const { getUserData } = require('./profile');
+const { getUserData, getReviewerData } = require('./profile');
 
 function getSongID(uri) {
     const parts = uri.split(":");
@@ -28,7 +28,29 @@ async function getExistingRate(songId, token) {
     }
 }
 
-async function getRatesAndReviews(songId) {
+async function getReviews(songId, token) {
+    try {
+        const reviews = await Rate.findAll({
+            where: {
+                spotify_song_id: songId,
+                review: { [Sequelize.Op.not]: null },
+            },
+        });
+
+        for (const review of reviews) {
+            review.dataValues.reviewer = await getReviewerData(review.spotify_user_id, token);
+        }
+
+        console.log(reviews);
+        return reviews;
+    } catch (error) {
+        console.error('Erro ao obter reviews do banco de dados:', error);
+        throw error;
+    }
+}
+
+
+async function getRatesAndReviews(songId, token) {
     try {
         const rates = await Rate.findAll({
             attributes: ['rate', [Sequelize.fn('COUNT', 'rate'), 'count']],
@@ -50,7 +72,7 @@ async function getRatesAndReviews(songId) {
 
         const output = {
             rateCounts: countMap,
-            reviews: (await Rate.findAll({ where: { spotify_song_id: songId, review: { [Sequelize.Op.not]: null } } })),
+            reviews: await getReviews(songId, token),
         };
 
         return output;
@@ -76,7 +98,7 @@ songRoutes.get('/song', async (req, res) => {
             res.status(404).json({ message: 'Música não encontrada.' });
 
         song.userActions = await getExistingRate(song.spotifyData.id, accessToken);
-        song.ratefyData = await getRatesAndReviews(song.spotifyData.id);
+        song.ratefyData = await getRatesAndReviews(song.spotifyData.id, accessToken);
         res.send(song);
     } catch (error) {
         console.error('Erro ao obter dados do Spotify:', error);
